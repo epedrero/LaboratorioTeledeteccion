@@ -1,12 +1,17 @@
 import snappy
 import os
-from snappy import ProductIO, WKTReader, GPF, jpy, HashMap
+from snappy import ProductIO, WKTReader, GPF, jpy, HashMap, File
 import matplotlib.pyplot as plt
+import zipfile
 
-path_data_zip = r'C:\Users\ernes\Documents\DatosSat\S3B_OL_1_EFR____20230218T135723_20230218T140023_20230218T233406_0179_076_181_3600_PS2_O_NT_003.zip'
-path_data_dim = r'C:\Users\ernes\Documents\DatosSat\S3B_OL_1_EFR____20230218T135723_20230218T140023_20230218T233406_0179_076_181_3600_PS2_O_NT_003.dim'
-product = ProductIO.readProduct(path_data_zip)
-ProductIO.writeProduct(product, path_data_dim, 'BEAM-DIMAP')
+path_data= r"C:\Users\ernes\Documents\DatosSat\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.zip"
+
+with zipfile.ZipFile(path_data, 'r') as zf:
+    zf.extractall(r"C:\Users\ernes\Documents\Laboratorio\Week 5")
+
+path_manifesto = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
+
+p = snappy.ProductIO.readProduct(path_manifesto)
 
 sal=35.0
 temp=15.0
@@ -37,7 +42,7 @@ outputUncertainties=True
 
 HashMap = jpy.get_type('java.util.HashMap')
 parameters = HashMap()
-parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water)')
+#parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water)')
 parameters.put('temperature',temp)
 parameters.put('salinity',sal)
 parameters.put('ozone',ozo)
@@ -64,5 +69,5 @@ parameters.put('outputOos',outputOos)
 parameters.put('outputKd',outputKd)
 parameters.put('outputUncertainties',outputUncertainties)
 
-result = GPF.createProduct('c2rcc.olci', parameters, product_dim)
-product=ProductIO.writeProduct(result,'F:/hydromerit/Hydromedit/images/sentinel_2/out/20180721_S3_C2RCC.dim','BEAM-DIMAP')
+result = GPF.createProduct('c2rcc', parameters, p)
+product=ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\Result_S3_C2RCC.dim','BEAM-DIMAP')
