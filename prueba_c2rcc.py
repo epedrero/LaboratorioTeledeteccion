@@ -1,18 +1,24 @@
 import snappy
 import os
 from snappy import ProductIO, WKTReader, GPF, jpy, HashMap, File
-import matplotlib.pyplot as plt
 import zipfile
 
+#Lectura de la imagen
 path_data= r"C:\Users\ernes\Documents\DatosSat\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.zip"
-
 with zipfile.ZipFile(path_data, 'r') as zf:
     zf.extractall(r"C:\Users\ernes\Documents\Laboratorio\Week 5")
-
 path_manifesto = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
-
 p = snappy.ProductIO.readProduct(path_manifesto)
 
+#Subset
+'''
+params = snappy.HashMap()
+params.put('copyMetadata', True)
+params.put('region', 'POLYGON(-39.1929 -72.2391, -39.3126 -72.2391, -39.1929 -71.9388, -39.3126 -71.9388)')
+subset_p = snappy.GPF.createProduct('Subset', params, p)
+'''
+              
+#Valores de los parámetros
 sal=35.0
 temp=15.0
 ozo=330.0
@@ -40,6 +46,7 @@ outputOos=False
 outputKd=True
 outputUncertainties=True
 
+#Ingreso de los parámetros
 HashMap = jpy.get_type('java.util.HashMap')
 parameters = HashMap()
 #parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water)')
@@ -69,5 +76,7 @@ parameters.put('outputOos',outputOos)
 parameters.put('outputKd',outputKd)
 parameters.put('outputUncertainties',outputUncertainties)
 
-result = GPF.createProduct('c2rcc', parameters, p)
+#Crear resultado con el algoritmo C2RCC
+result = GPF.createProduct('c2rcc.olci', parameters, p)
+
 product=ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\Result_S3_C2RCC.dim','BEAM-DIMAP')
