@@ -10,8 +10,12 @@ with zipfile.ZipFile(path_data, 'r') as zf:
 path_manifesto = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
 p = snappy.ProductIO.readProduct(path_manifesto)
 
-#Subset
+#Crear .dim a partir del manifesto
+path_dim = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.dim"
+p_dim = ProductIO.writeProduct(p,path_dim,'BEAM-DIMAP')
+p_dim_read = ProductIO.readProduct(path_dim)
 '''
+#Subset
 params = snappy.HashMap()
 params.put('copyMetadata', True)
 params.put('region', 'POLYGON(-39.1929 -72.2391, -39.3126 -72.2391, -39.1929 -71.9388, -39.3126 -71.9388)')
@@ -77,6 +81,6 @@ parameters.put('outputKd',outputKd)
 parameters.put('outputUncertainties',outputUncertainties)
 
 #Crear resultado con el algoritmo C2RCC
-result = GPF.createProduct('c2rcc.olci', parameters, p)
+result = GPF.createProduct('c2rcc.olci', parameters, p_dim_read)
 
-product=ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\Result_S3_C2RCC.dim','BEAM-DIMAP')
+product=ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.dim','BEAM-DIMAP') 
