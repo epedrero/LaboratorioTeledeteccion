@@ -1,27 +1,37 @@
 import snappy
+import numpy as np
 import os
-from snappy import ProductIO, WKTReader, GPF, jpy, HashMap, File
 import zipfile
+from snappy import ProductIO, WKTReader, GPF, jpy, HashMap, File
 
 #Lectura de la imagen
+
 path_data= r"C:\Users\ernes\Documents\DatosSat\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.zip"
 with zipfile.ZipFile(path_data, 'r') as zf:
     zf.extractall(r"C:\Users\ernes\Documents\Laboratorio\Week 5")
 path_manifesto = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
 p = snappy.ProductIO.readProduct(path_manifesto)
 
+'''
 #Crear .dim a partir del manifesto
 path_dim = r"C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.dim"
 p_dim = ProductIO.writeProduct(p,path_dim,'BEAM-DIMAP')
 p_dim_read = ProductIO.readProduct(path_dim)
 '''
+
 #Subset
+x = 403.0  # upper-left corner longitude
+y = 3023.0  # upper-left corner latitude
+width = 100  # width of the subset region
+height = 100  # height of the subset region
 params = snappy.HashMap()
 params.put('copyMetadata', True)
-params.put('region', 'POLYGON(-39.1929 -72.2391, -39.3126 -72.2391, -39.1929 -71.9388, -39.3126 -71.9388)')
+params.put('boundingBox', 'x,y,width,height')
 subset_p = snappy.GPF.createProduct('Subset', params, p)
-'''
-              
+subset_path = r"C:\Users\ernes\Documents\Laboratorio\Week 5\subset_of_S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.dim"
+snappy.ProductIO.writeProduct(subset_p, subset_path, 'BEAM-DIMAP')
+p_subset = ProductIO.readProduct(subset_path)
+            
 #Valores de los parámetros
 sal=35.0
 temp=15.0
@@ -53,7 +63,7 @@ outputUncertainties=True
 #Ingreso de los parámetros
 HashMap = jpy.get_type('java.util.HashMap')
 parameters = HashMap()
-#parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water)')
+parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water))')
 parameters.put('temperature',temp)
 parameters.put('salinity',sal)
 parameters.put('ozone',ozo)
@@ -81,6 +91,12 @@ parameters.put('outputKd',outputKd)
 parameters.put('outputUncertainties',outputUncertainties)
 
 #Crear resultado con el algoritmo C2RCC
-result = GPF.createProduct('c2rcc.olci', parameters, p_dim_read)
+result = GPF.createProduct('c2rcc.olci', parameters, p_subset)
 
-product=ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.dim','BEAM-DIMAP') 
+list(result.getBandNames())
+conc_chl = result.getBand('conc_chl')
+width = conc_chl.getRasterWidth()
+height = conc_chl.getRasterHeight()
+
+
+ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003_C2RCC.dim','BEAM-DIMAP') 
