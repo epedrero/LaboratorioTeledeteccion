@@ -3,6 +3,7 @@ import numpy as np
 import os
 import zipfile
 from snappy import ProductIO, WKTReader, GPF, jpy, HashMap, File
+import matplotlib.pyplot as plt
 
 #Lectura de la imagen
 
@@ -64,6 +65,7 @@ outputUncertainties=True
 HashMap = jpy.get_type('java.util.HashMap')
 parameters = HashMap()
 parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water))')
+'''
 parameters.put('temperature',temp)
 parameters.put('salinity',sal)
 parameters.put('ozone',ozo)
@@ -89,14 +91,24 @@ parameters.put('outputRhown',outputRhown)
 parameters.put('outputOos',outputOos)
 parameters.put('outputKd',outputKd)
 parameters.put('outputUncertainties',outputUncertainties)
-
+'''
 #Crear resultado con el algoritmo C2RCC
 result = GPF.createProduct('c2rcc.olci', parameters, p_subset)
 
-list(result.getBandNames())
-conc_chl = result.getBand('conc_chl')
-width = conc_chl.getRasterWidth()
-height = conc_chl.getRasterHeight()
-
-
+#Crear .dim del c2rcc
+c2rcc_path = r'C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003_C2RCC.dim'
 ProductIO.writeProduct(result,r'C:\Users\ernes\Documents\Laboratorio\Week 5\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003_C2RCC.dim','BEAM-DIMAP') 
+c2rcc = snappy.ProductIO.readProduct(c2rcc_path)
+
+#Recuperar la banda conc_chl del producto y convertirlo en un array
+chl_conc_band = c2rcc.getBand('conc_chl')
+width = chl_conc_band.getRasterWidth()
+height = chl_conc_band.getRasterHeight()
+chl_conc_data = np.zeros(width * height, dtype=np.float32)
+chl_conc_band.readPixels(0, 0, width, height, chl_conc_data)
+chl_conc_data = chl_conc_data.reshape(height, width)
+
+#Visualizarlo
+plt.imshow(chl_conc_data, cmap='jet')
+plt.colorbar()
+plt.show()
