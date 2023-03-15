@@ -1,0 +1,14 @@
+ENVI
+description = {log10 scaled Radiometric Uncertainty Estimate for OLCI acquisition band Oa20 - Unit: lg(re mW.m-2.sr-1.nm-1) - Wavelength: 940.0nm}
+samples = 292
+lines = 386
+bands = 1
+header offset = 0
+file type = ENVI Standard
+data type = 1
+interleave = bsq
+byte order = 1
+band names = { Oa20_radiance_unc }
+wavelength = {940.0}
+data gain values = {0.008166000247001648}
+data offset values = {-0.9243649840354919}
