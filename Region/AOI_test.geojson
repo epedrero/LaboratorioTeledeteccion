@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "AOI_test",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -72.287020488082902, -38.992474903003526 ], [ -71.656851463410447, -38.995697101977868 ], [ -71.735622591494504, -39.895309689233066 ], [ -72.353354069627358, -39.882585434521232 ], [ -72.287020488082902, -38.992474903003526 ] ] ] ] } }
+]
+}
