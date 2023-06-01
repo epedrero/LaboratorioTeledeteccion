@@ -11,12 +11,12 @@ from snappy import (ProgressMonitor, VectorDataNode,
 
 
 """Read S3 EFR product from Local folder"""
-s3efr_path = r"C:\Users\ernes\Documents\Laboratorio\Week 5\Subset"
-s3efr_filename = r"\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
+s3efr_path = r"C:\S3_WFR_product\Data"
+s3efr_filename =  r"\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003\S3A_OL_1_EFR____20230201T133642_20230201T133942_20230202T135629_0179_095_081_3600_PS1_O_NT_003.SEN3\xfdumanifest.xml"
 s3efr = ProductIO.readProduct(s3efr_path+s3efr_filename)
 
 """Read Area Of Interest (AOI) """
-geojson_path = r"C:\Users\ernes\Documents\Laboratorio\Week 6\AOI_test.geojson"
+geojson_path = r"C:\S3_WFR_product\AOI_test.geojson"
 aoi = geojson_to_wkt(read_geojson(geojson_path))
 geometry = WKTReader().read(aoi)
 geometry_parameters = HashMap()
@@ -25,7 +25,7 @@ geometry_parameters.put("geoRegion", geometry)
 
 """Create a Subset using AOI"""
 subset_s3efr = snappy.GPF.createProduct('Subset', geometry_parameters, s3efr)
-subset_s3efr_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\subset_s3efr.dim"
+subset_s3efr_dst = r"C:\S3_WFR_product\Results\subset_s3efr.dim"
 snappy.ProductIO.writeProduct(subset_s3efr, subset_s3efr_dst, 'BEAM-DIMAP')
 
 """ Create Cloud Mask using IdePix S3 OLCI"""
@@ -37,9 +37,9 @@ idepix_parameters.put('computeCloudBuffer','true')
 idepix_parameters.put('CloudBufferWidth',2)
 idepix_parameters.put('useSrtmLandWaterMaske','false')
 
-idepix_product = GPF.createProduct('Idepix.OLCI',idepix_parameters, subset_s3efr)
-idepix_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\idepix.dim"
-snappy.ProductIO.writeProduct(idepix_product, idepix_dst, 'BEAM-DIMAP')
+idepix_product = GPF.createProduct('Idepix.OLCI',idepix_params, subset_s3efr)
+#idepix_dst = r"C:\S3_WFR_product\Results\idepix.dim"
+#snappy.ProductIO.writeProduct(idepix_product, idepix_dst, 'BEAM-DIMAP')
 
 """C2RCC Algorithm params"""
 sal=35.0
@@ -102,8 +102,8 @@ c2rcc_parameters.put('outputUncertainties', outputUncertainties)
 
 """S3 Water Full Resolution (WFR) product"""
 s3wfr = GPF.createProduct('c2rcc.olci', c2rcc_parameters, subset_s3efr)
-s3wfr_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\s3wfr.dim"
-snappy.ProductIO.writeProduct(s3wfr, s3wfr_dst, 'BEAM-DIMAP')
+#s3wfr_dst = r"C:\S3_WFR_product\Results\s3wfr.dim"
+#snappy.ProductIO.writeProduct(s3wfr, s3wfr_dst, 'BEAM-DIMAP')
 
 """Reprojection"""
 reprojec_parameters = HashMap()
@@ -112,5 +112,6 @@ reprojec_parameters.put('noDataValue', -9999.)
 reprojec_parameters.put('addDeltaBands', False)
 
 s3wfr_reproject = GPF.createProduct('Reproject', reprojec_parameters, s3wfr)
-s3wfr_reproject_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\reprojec.dim"
-snappy.ProductIO.writeProduct(s3wfr_reproject, s3wfr_reproject_dst, 'BEAM-DIMAP')
+
+#s3wfr_reproject_dst = r"C:\S3_WFR_product\Results\reprojec.dim"
+#snappy.ProductIO.writeProduct(s3wfr_reproject, s3wfr_reproject_dst, 'BEAM-DIMAP')

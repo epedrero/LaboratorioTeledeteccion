@@ -1,5 +1,7 @@
 import snappy
 from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson
+import numpy as np
+import matplotlib.pyplot as plt
 #import os
 #import numpy as np
 from snappy import (ProgressMonitor, VectorDataNode,
@@ -26,7 +28,8 @@ geometry_parameters.put("geoRegion", geometry)
 """Create a Subset using AOI"""
 subset_s3efr = snappy.GPF.createProduct('Subset', geometry_parameters, s3efr)
 subset_s3efr_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados deft\subset_s3efr.dim"
-snappy.ProductIO.writeProduct(subset_s3efr, subset_s3efr_dst, 'BEAM-DIMAP')
+product_s3efr=snappy.ProductIO.writeProduct(subset_s3efr, subset_s3efr_dst, 'BEAM-DIMAP')
+product_s3efr=snappy.ProductIO.readProduct(subset_s3efr_dst)
 
 """ Create Cloud Mask using IdePix S3 OLCI"""
 idepix_parameters = HashMap()
@@ -38,8 +41,27 @@ idepix_parameters.put('CloudBufferWidth',2)
 idepix_parameters.put('useSrtmLandWaterMaske','false')
 
 idepix_product = GPF.createProduct('Idepix.OLCI',idepix_parameters, subset_s3efr)
-idepix_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\idepix.dim"
+idepix_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados deft\idepix.dim"
 snappy.ProductIO.writeProduct(idepix_product, idepix_dst, 'BEAM-DIMAP')
+idepix_product_read = snappy.ProductIO.readProduct(idepix_dst)
+
+
+"""Cloud mask apply"""
+# Aplicar corrección de órbita
+params_cloud = snappy.HashMap()
+params_cloud.put('orbitType', 'Sentinel Restituted (Auto Download)')
+params_cloud.put('polyDegree', '3')
+corrected_product = GPF.createProduct('Apply-Orbit-File', params_cloud, product)
+
+# Mask apply
+params = snappy.HashMap()
+params.put('landMask', mask)
+params.put('cloudMask', mask)
+params.put('invalidMask', mask)
+masked_product = GPF.createProduct('Meris.Mask', params, corrected_product)
+
+# Save mask applied
+ProductIO.writeProduct(masked_product, r'C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados deft\masked.dim', 'BEAM-DIMAP')
 
 """C2RCC Algorithm params"""
 sal=35.0
@@ -72,7 +94,7 @@ outputUncertainties=True
 """C2RCC algorithm"""
 HashMap = jpy.get_type('java.util.HashMap')
 c2rcc_parameters = HashMap()
-#params.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water))')
+#c2rcc_parameters.put('validPixelExpression','(!quality_flags.invalid && (!quality_flags.land || quality_flags.fresh_inland_water))')
 c2rcc_parameters.put('validPixelExpression', 'quality_flags.fresh_inland_water')
 c2rcc_parameters.put('temperature', temp)
 c2rcc_parameters.put('salinity', sal)
@@ -102,7 +124,7 @@ c2rcc_parameters.put('outputUncertainties', outputUncertainties)
 
 """S3 Water Full Resolution (WFR) product"""
 s3wfr = GPF.createProduct('c2rcc.olci', c2rcc_parameters, subset_s3efr)
-s3wfr_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\s3wfr.dim"
+s3wfr_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados deft\s3wfr.dim"
 snappy.ProductIO.writeProduct(s3wfr, s3wfr_dst, 'BEAM-DIMAP')
 
 """Reprojection"""
@@ -112,5 +134,29 @@ reprojec_parameters.put('noDataValue', -9999.)
 reprojec_parameters.put('addDeltaBands', False)
 
 s3wfr_reproject = GPF.createProduct('Reproject', reprojec_parameters, s3wfr)
-s3wfr_reproject_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados\reprojec.dim"
+s3wfr_reproject_dst = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Resultados deft\reprojec.dim"
 snappy.ProductIO.writeProduct(s3wfr_reproject, s3wfr_reproject_dst, 'BEAM-DIMAP')
+s3wfr_reproject_dst_read = snappy.ProductIO.readProduct(s3wfr_reproject_dst)
+
+""""Plot"""
+chl_conc_band = s3wfr_reproject_dst_read.getBand('conc_chl')
+width = chl_conc_band.getRasterWidth()
+height = chl_conc_band.getRasterHeight()
+chl_conc_data = np.zeros(width * height, dtype=np.float32)
+chl_conc_band.readPixels(0, 0, width, height, chl_conc_data)
+chl_conc_data = chl_conc_data.reshape(height, width)
+
+
+plt.close('all') #Esto es para limpiar antiguos plots
+land_mask = chl_conc_data<0.01
+water_mask  = ~land_mask
+chl_conc_data[land_mask] = np.nan
+##Gráfico
+#plt.imshow(chl_conc_data, cmap='jet')
+#plt.set_cmap('jet') #
+plt.imshow(np.ma.masked_array(chl_conc_data, np.isnan(chl_conc_data)), cmap='jet')
+plt.colorbar()
+plt.set_cmap('jet')
+plt.imshow(np.ma.masked_array(land_mask, ~land_mask), cmap='gray', alpha=0)
+plt.title('Chlorophyll-$a$ concentration in the Villarrica Lake zone')
+plt.show()

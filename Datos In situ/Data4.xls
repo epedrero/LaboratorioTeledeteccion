@@ -1,0 +1,139 @@
+<table border="1" cellpadding="2" cellspacing="2" id="datos">
+            <thead>
+              <tr bgcolor="#CCCCCC">
+                <th bgcolor="#CCCCCC" class="txt_form" scope="col">Nro.</th>
+                <th nowrap="" bgcolor="#CCCCCC" class="txt_form" scope="col">Fecha-Hora de Medicion</th>
+				
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>PH
+(ph)</th>
+                
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Temp. Sonda
+(ºC)</th>
+                
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Oxígeno Disuelto 1
+(%)</th>
+                
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Oxígeno Disuelto 2
+(ppm)</th>
+                
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Clorofila
+(ug/L)</th>
+                
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Materia organica disuelta
+(QSU)</th>
+                
+             </tr></thead>
+
+          <tbody>
+            
+				            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">1</td>
+				  <td class="txt">31/05/2023 00:10&nbsp;</td>
+				  <td class="txt" align="right">7.530</td>
+				  <td class="txt" align="right">12.860</td>
+  				  <td class="txt" align="right">100.320</td>
+  				  <td class="txt" align="right">10.400</td>
+  				  <td class="txt" align="right">1.460</td>
+				  <td class="txt" align="right">3.200</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">2</td>
+				  <td class="txt">31/05/2023 02:10&nbsp;</td>
+				  <td class="txt" align="right">7.560</td>
+				  <td class="txt" align="right">12.860</td>
+  				  <td class="txt" align="right">100.180</td>
+  				  <td class="txt" align="right">10.390</td>
+  				  <td class="txt" align="right">1.380</td>
+				  <td class="txt" align="right">3.220</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">3</td>
+				  <td class="txt">31/05/2023 04:10&nbsp;</td>
+				  <td class="txt" align="right">7.570</td>
+				  <td class="txt" align="right">12.860</td>
+  				  <td class="txt" align="right">100.450</td>
+  				  <td class="txt" align="right">10.420</td>
+  				  <td class="txt" align="right">1.640</td>
+				  <td class="txt" align="right">3.230</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">4</td>
+				  <td class="txt">31/05/2023 06:10&nbsp;</td>
+				  <td class="txt" align="right">7.570</td>
+				  <td class="txt" align="right">12.850</td>
+  				  <td class="txt" align="right">100.360</td>
+  				  <td class="txt" align="right">10.410</td>
+  				  <td class="txt" align="right">1.720</td>
+				  <td class="txt" align="right">3.260</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">5</td>
+				  <td class="txt">31/05/2023 08:10&nbsp;</td>
+				  <td class="txt" align="right">7.600</td>
+				  <td class="txt" align="right">12.850</td>
+  				  <td class="txt" align="right">100.430</td>
+  				  <td class="txt" align="right">10.420</td>
+  				  <td class="txt" align="right">1.530</td>
+				  <td class="txt" align="right">3.190</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">6</td>
+				  <td class="txt">31/05/2023 10:10&nbsp;</td>
+				  <td class="txt" align="right">7.600</td>
+				  <td class="txt" align="right">12.860</td>
+  				  <td class="txt" align="right">100.600</td>
+  				  <td class="txt" align="right">10.430</td>
+  				  <td class="txt" align="right">1.620</td>
+				  <td class="txt" align="right">3.260</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">7</td>
+				  <td class="txt">31/05/2023 12:10&nbsp;</td>
+				  <td class="txt" align="right">7.570</td>
+				  <td class="txt" align="right">12.840</td>
+  				  <td class="txt" align="right">100.610</td>
+  				  <td class="txt" align="right">10.440</td>
+  				  <td class="txt" align="right">1.520</td>
+				  <td class="txt" align="right">3.240</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">8</td>
+				  <td class="txt">31/05/2023 14:10&nbsp;</td>
+				  <td class="txt" align="right">7.540</td>
+				  <td class="txt" align="right">12.840</td>
+  				  <td class="txt" align="right">100.480</td>
+  				  <td class="txt" align="right">10.430</td>
+  				  <td class="txt" align="right">1.440</td>
+				  <td class="txt" align="right">3.230</td>
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">9</td>
+				  <td class="txt">31/05/2023 16:10&nbsp;</td>
+				  <td class="txt" align="right">7.560</td>
+				  <td class="txt" align="right">12.850</td>
+  				  <td class="txt" align="right">100.520</td>
+  				  <td class="txt" align="right">10.420</td>
+  				  <td class="txt" align="right">1.540</td>
+				  <td class="txt" align="right">3.260</td>
+			  </tr>
+
+                			  
+	 </tbody>
+    </table>

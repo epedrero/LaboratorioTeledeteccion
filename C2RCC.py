@@ -130,7 +130,7 @@ plt.imshow(np.ma.masked_array(chl_conc_data,np.isnan(chl_conc_data)),cmap='jet')
 plt.colorbar()
 plt.set_cmap('jet') #
 plt.imshow(np.ma.masked_array(land_mask, ~land_mask), cmap='gray', alpha=0)
-plt.title('Concentración de clorofila en Lago Villarrica')
+plt.title('Chlorophyll-$a$ concentration in the Villarrica Lake')
 plt.show()
 
 #Exportar GeoTIFF

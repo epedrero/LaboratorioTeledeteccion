@@ -1,0 +1,124 @@
+<table border="1" cellpadding="2" cellspacing="2" id="datos">
+            <thead>
+              <tr bgcolor="#CCCCCC">
+                <th bgcolor="#CCCCCC" class="txt_form" scope="col">Nro.</th>
+                <th nowrap="" bgcolor="#CCCCCC" class="txt_form" scope="col">Fecha-Hora de Medicion</th>
+				
+                <th class="txt_form" nowrap="">LAGO VILLARR<br>Ficocianina
+(ug/lt)</th>
+                
+             </tr></thead>
+
+          <tbody>
+            
+				            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">1</td>
+				  <td class="txt">31/05/2023 00:10&nbsp;</td>
+				  <td class="txt" align="right">0.210</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">2</td>
+				  <td class="txt">31/05/2023 02:10&nbsp;</td>
+				  <td class="txt" align="right">0.210</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">3</td>
+				  <td class="txt">31/05/2023 04:10&nbsp;</td>
+				  <td class="txt" align="right">0.200</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">4</td>
+				  <td class="txt">31/05/2023 06:10&nbsp;</td>
+				  <td class="txt" align="right">0.220</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">5</td>
+				  <td class="txt">31/05/2023 08:10&nbsp;</td>
+				  <td class="txt" align="right">0.190</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">6</td>
+				  <td class="txt">31/05/2023 10:10&nbsp;</td>
+				  <td class="txt" align="right">0.210</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">7</td>
+				  <td class="txt">31/05/2023 12:10&nbsp;</td>
+				  <td class="txt" align="right">0.220</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#F3F2F2">
+				  <td class="txt">8</td>
+				  <td class="txt">31/05/2023 14:10&nbsp;</td>
+				  <td class="txt" align="right">0.210</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                            
+              	<tr bgcolor="#E4E2E1">
+				  <td class="txt">9</td>
+				  <td class="txt">31/05/2023 16:10&nbsp;</td>
+				  <td class="txt" align="right">0.190</td>
+				  
+  				  
+  				  
+  				  
+				  
+			  </tr>
+
+                			  
+	 </tbody>
+    </table>
