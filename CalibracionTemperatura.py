@@ -1,20 +1,29 @@
-import os
+from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
+from datetime import date
 import pandas as pd
 
-# Path
-carpeta = r"C:\Users\ernes\Documents\Laboratorio\LaboratorioTeledeteccion\Datos In situ"
+# Conectar a la API
+user = 'epedrero'
+password = 'Maricarmen2023!'
+api = SentinelAPI(user, password, 'https://scihub.copernicus.eu/dhus')
 
-# Obtén la lista de archivos en la carpeta
-archivos_excel = [archivo for archivo in os.listdir(carpeta) if archivo.endswith(".xls")]
+# Región de interés
+geojson_path = r"C:\Users\LABORATORIO\Documents\Ernesto\LaboratorioTeledeteccion\Region\AOI_test.geojson"
+footprint = geojson_to_wkt(read_geojson(geojson_path))
 
-# Crea una lista para almacenar los dataframes de cada archivo
-dataframes = []
+# Consulta de productos
+products = api.query(footprint,
+                     date=(date(2022, 10, 1), date(2023, 5, 14)),
+                     platformname='Sentinel-3',
+                     producttype='SL_2_LST___' # Productos de temperatura superficial del agua
+                     )
 
-# Lee cada archivo Excel y agrega su contenido al dataframe
-for archivo in archivos_excel:
-    ruta_archivo = os.path.join(carpeta, archivo)
-    df = pd.read_excel(ruta_archivo)
-    dataframes.append(df)
-
-# Combina todos los dataframes en uno solo
-dataframe_final = pd.concat(dataframes)
+products_df = api.to_dataframe(products)
+for column in products_df.columns:
+    print(column)
+path = r"C:\Users\LABORATORIO\Documents\Ernesto\LaboratorioTeledeteccion\products.xlsx"
+products_df.to_excel(path, index=False)
+'''
+# Descargar los productos encontrados
+api.download_all(products)
+'''
